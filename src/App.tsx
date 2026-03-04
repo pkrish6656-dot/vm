@@ -1,5 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
 import { CatalogItem, legalDemoProvider, VideoQuality } from './content';
+import { useMemo, useState } from 'react';
+
+type MediaCard = {
+  id: number;
+  title: string;
+  year: number;
+  genre: string;
+  rating: number;
+  duration: string;
+  cover: string;
+};
 
 const featured = {
   title: 'Neon District',
@@ -10,6 +21,16 @@ const featured = {
 
 const tabs = ['Home', 'Movies', 'Series', 'Watchlist'] as const;
 const qualityOptions: Array<VideoQuality | 'All'> = ['All', 'SD', 'HD', 'Full HD', '4K'];
+const library: MediaCard[] = [
+  { id: 1, title: 'Orbital Dawn', year: 2025, genre: 'Sci-Fi', rating: 8.7, duration: '2h 11m', cover: '🌌' },
+  { id: 2, title: 'Last Ember', year: 2024, genre: 'Action', rating: 8.1, duration: '1h 49m', cover: '🔥' },
+  { id: 3, title: 'Paper Tigers', year: 2026, genre: 'Drama', rating: 7.9, duration: '2h 03m', cover: '🐅' },
+  { id: 4, title: 'Solar Tide', year: 2023, genre: 'Adventure', rating: 8.0, duration: '1h 57m', cover: '🌊' },
+  { id: 5, title: 'Ghost Thread', year: 2025, genre: 'Mystery', rating: 8.4, duration: '1h 43m', cover: '🧵' },
+  { id: 6, title: 'Atlas Reborn', year: 2024, genre: 'Fantasy', rating: 7.8, duration: '2h 18m', cover: '🗺️' }
+];
+
+const tabs = ['Home', 'Movies', 'Series', 'Watchlist'] as const;
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<(typeof tabs)[number]>('Home');
@@ -29,6 +50,14 @@ export default function App() {
       return matchesSearch && matchesTab && matchesQuality;
     });
   }, [activeTab, catalog, quality, query]);
+
+  const filtered = useMemo(() => {
+    return library.filter((item) => {
+      const matchesSearch = item.title.toLowerCase().includes(query.toLowerCase());
+      const matchesTab = activeTab === 'Home' || activeTab === 'Watchlist' ? true : item.genre !== 'Documentary';
+      return matchesSearch && matchesTab;
+    });
+  }, [activeTab, query]);
 
   return (
     <div className="app-shell">
@@ -88,6 +117,7 @@ export default function App() {
             </select>
             <button className="ghost-btn">View All</button>
           </div>
+          <button className="ghost-btn">View All</button>
         </div>
 
         <div className="grid">
@@ -101,6 +131,7 @@ export default function App() {
                   <h3>{item.title}</h3>
                   <span className="quality-pill">{item.quality}</span>
                 </div>
+                <h3>{item.title}</h3>
                 <p>
                   {item.year} • {item.genre}
                 </p>
