@@ -4,6 +4,14 @@
   background: #0a0b10;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #1a1f3e 0%, #0a0b10 45%);
+}
 * { box-sizing: border-box; }
 body { margin: 0; background: radial-gradient(circle at top, #1a1f3e 0%, #0a0b10 45%); }
 
@@ -26,6 +34,11 @@ body { margin: 0; background: radial-gradient(circle at top, #1a1f3e 0%, #0a0b10
   color: #6ba8ff;
 }
 
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .tabs { display: flex; gap: 0.5rem; }
 .tab {
   border: 0;
@@ -34,6 +47,7 @@ body { margin: 0; background: radial-gradient(circle at top, #1a1f3e 0%, #0a0b10
   padding: 0.4rem 0.75rem;
   border-radius: 999px;
 }
+
 .tab.active {
   background: #263160;
   color: white;
@@ -53,6 +67,28 @@ body { margin: 0; background: radial-gradient(circle at top, #1a1f3e 0%, #0a0b10
   background: linear-gradient(130deg, rgba(63, 93, 228, 0.35), rgba(149, 39, 168, 0.35));
   border: 1px solid #2a3158;
   border-radius: 14px;
+  padding: 1.5rem 2rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1.8fr 1fr;
+}
+
+.hero-meta {
+  background: rgba(10, 13, 27, 0.6);
+  border: 1px solid #2d3765;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.source-name {
+  margin: 0.3rem 0;
+  font-weight: 700;
+}
+
+.compliance-note {
+  margin: 0;
+  color: #c8d0f5;
+  font-size: 0.85rem;
   padding: 2rem;
 }
 
@@ -63,6 +99,9 @@ body { margin: 0; background: radial-gradient(circle at top, #1a1f3e 0%, #0a0b10
   font-size: 0.75rem;
 }
 
+h1 {
+  margin: 0.3rem 0 0.7rem;
+}
 h1 { margin: 0.3rem 0 0.7rem; }
 
 .primary-btn,
@@ -83,6 +122,25 @@ h1 { margin: 0.3rem 0 0.7rem; }
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.quality-label {
+  font-size: 0.8rem;
+  color: #c9d5ff;
+}
+
+.quality {
+  border: 1px solid #34427a;
+  background: #12172f;
+  color: #d9def5;
+  border-radius: 8px;
+  padding: 0.35rem 0.55rem;
 }
 
 .ghost-btn {
@@ -117,13 +175,43 @@ h1 { margin: 0.3rem 0 0.7rem; }
   padding: 0.7rem;
 }
 
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .meta h3 {
   margin: 0;
   font-size: 0.95rem;
+}
+
+.quality-pill {
+  font-size: 0.68rem;
+  border: 1px solid #4060be;
+  color: #d6e3ff;
+  border-radius: 999px;
+  padding: 0.15rem 0.4rem;
+  white-space: nowrap;
 }
 
 .meta p {
   margin: 0.25rem 0 0;
   color: #aeb8df;
   font-size: 0.78rem;
+}
+
+.source {
+  color: #91a6ec;
+}
+
+@media (max-width: 900px) {
+  .topbar {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+  }
 }

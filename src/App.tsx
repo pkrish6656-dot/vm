@@ -1,3 +1,5 @@
+import { useEffect, useMemo, useState } from 'react';
+import { CatalogItem, legalDemoProvider, VideoQuality } from './content';
 import { useMemo, useState } from 'react';
 
 type MediaCard = {
@@ -17,6 +19,8 @@ const featured = {
   cta: 'Watch Trailer'
 };
 
+const tabs = ['Home', 'Movies', 'Series', 'Watchlist'] as const;
+const qualityOptions: Array<VideoQuality | 'All'> = ['All', 'SD', 'HD', 'Full HD', '4K'];
 const library: MediaCard[] = [
   { id: 1, title: 'Orbital Dawn', year: 2025, genre: 'Sci-Fi', rating: 8.7, duration: '2h 11m', cover: '🌌' },
   { id: 2, title: 'Last Ember', year: 2024, genre: 'Action', rating: 8.1, duration: '1h 49m', cover: '🔥' },
@@ -31,6 +35,21 @@ const tabs = ['Home', 'Movies', 'Series', 'Watchlist'] as const;
 export default function App() {
   const [activeTab, setActiveTab] = useState<(typeof tabs)[number]>('Home');
   const [query, setQuery] = useState('');
+  const [quality, setQuality] = useState<(typeof qualityOptions)[number]>('All');
+  const [catalog, setCatalog] = useState<CatalogItem[]>([]);
+
+  useEffect(() => {
+    legalDemoProvider.getCatalog().then(setCatalog);
+  }, []);
+
+  const filtered = useMemo(() => {
+    return catalog.filter((item) => {
+      const matchesSearch = item.title.toLowerCase().includes(query.toLowerCase());
+      const matchesQuality = quality === 'All' ? true : item.quality === quality;
+      const matchesTab = activeTab === 'Home' || activeTab === 'Watchlist' ? true : item.genre !== 'Documentary';
+      return matchesSearch && matchesTab && matchesQuality;
+    });
+  }, [activeTab, catalog, quality, query]);
 
   const filtered = useMemo(() => {
     return library.filter((item) => {
@@ -70,11 +89,34 @@ export default function App() {
           <p>{featured.description}</p>
           <button className="primary-btn">{featured.cta}</button>
         </div>
+        <div className="hero-meta">
+          <p className="eyebrow">Content Source</p>
+          <p className="source-name">{legalDemoProvider.name}</p>
+          <p className="compliance-note">{legalDemoProvider.complianceNote}</p>
+        </div>
       </section>
 
       <main>
         <div className="section-head">
           <h2>{activeTab === 'Home' ? 'Trending Now' : activeTab}</h2>
+          <div className="filters">
+            <label htmlFor="quality" className="quality-label">
+              Quality
+            </label>
+            <select
+              id="quality"
+              className="quality"
+              value={quality}
+              onChange={(event) => setQuality(event.target.value as (typeof qualityOptions)[number])}
+            >
+              {qualityOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+            <button className="ghost-btn">View All</button>
+          </div>
           <button className="ghost-btn">View All</button>
         </div>
 
@@ -85,6 +127,10 @@ export default function App() {
                 {item.cover}
               </div>
               <div className="meta">
+                <div className="title-row">
+                  <h3>{item.title}</h3>
+                  <span className="quality-pill">{item.quality}</span>
+                </div>
                 <h3>{item.title}</h3>
                 <p>
                   {item.year} • {item.genre}
@@ -92,6 +138,7 @@ export default function App() {
                 <p>
                   ⭐ {item.rating} • {item.duration}
                 </p>
+                <p className="source">Source: {item.sourceLabel}</p>
               </div>
             </article>
           ))}
