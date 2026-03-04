@@ -16,12 +16,6 @@ The project now uses a `ContentProvider` abstraction (`src/content.ts`) so you c
 Current built-in provider:
 - `legalDemoProvider`: demo-only provider with licensed and public-domain placeholder metadata.
 
-- Hero banner
-- Top navigation tabs
-- Search filter
-- Responsive media card grid
-- Watchlist tab placeholder for future expansion
-
 ## Run
 ```bash
 npm install
